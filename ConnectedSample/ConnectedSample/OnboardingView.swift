@@ -8,6 +8,13 @@
 import SwiftUI
 import Combine
 
+extension String {
+    func containEnglish() -> Bool {
+        let englishRange = self.range(of: "[a-zA-Z]", options: .regularExpression)
+        return englishRange != nil
+    }
+}
+
 struct OnboardingView: View {
     let maxCharacterLength = Int(8)
     @State var name: String = ""
@@ -38,6 +45,10 @@ struct OnboardingView: View {
                             if maxCharacterLength < name.count {
                                 name = String(name.prefix(maxCharacterLength))
                             }
+                            if name.containEnglish() == true {
+                                name = String(name.dropLast())
+                            }
+                            
                         })
                 }
                 OnboardingButton(contentButton: "다음")
