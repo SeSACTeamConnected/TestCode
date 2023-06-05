@@ -9,9 +9,12 @@ import SwiftUI
 import Combine
 
 extension String {
-    func containEnglish() -> Bool {
-        let englishRange = self.range(of: "[a-zA-Z]", options: .regularExpression)
-        return englishRange != nil
+    func containKorean() -> Bool {
+        let koreanPattern = "^[ㄱ-ㅎㅏ-ㅣ가-힣]*$"
+               if let regex = try? NSRegularExpression(pattern: koreanPattern) {
+                   return regex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: count)) != nil
+               }
+               return false
     }
 }
 
@@ -45,9 +48,11 @@ struct OnboardingView: View {
                             if maxCharacterLength < name.count {
                                 name = String(name.prefix(maxCharacterLength))
                             }
-                            if name.containEnglish() == true {
+                            print(name)
+                            if name.containKorean() == false {
                                 name = String(name.dropLast())
                             }
+                            print(name.containKorean())
                             
                         })
                 }
